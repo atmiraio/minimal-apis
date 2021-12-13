@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,32 +11,44 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddDbContext<ParticlesDB>(options => options.UseInMemoryDatabase("Particles"));
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
-
-builder.Services.AddAuthorization();
-
 var app = builder.Build();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 //Routes
-app.MapGet("/particles", async (ParticlesDB db) => await db.Particles.ToListAsync()).RequireAuthorization();
-app.MapGet("/particles/{id}", async (int id, ParticlesDB db) => await db.Particles.FirstOrDefaultAsync(p => p.Id == id) is Particle particle ? Results.Ok(particle) : Results.NotFound());
+app.MapGet("/particles",
+    async (ParticlesDB db) =>
+        await db.Particles.ToListAsync()
+    )
+    .Produces<List<Particle>>(StatusCodes.Status200OK)
+    .WithName("GetAllParticles");
+
+app.MapGet("/particles/{id}",
+    async (int id, ParticlesDB db) =>
+        await db.Particles.FirstOrDefaultAsync(p => p.Id == id) is Particle particle
+            ? Results.Ok(particle)
+            : Results.NotFound()
+    )
+    .Produces<Particle>(StatusCodes.Status200OK)
+    .Produces(StatusCodes.Status404NotFound)
+    .WithName("GetParticleById");
+
 app.MapPost("/particles",
     async (Particle particle, ParticlesDB db) =>
     {
         db.Particles.Add(particle);
         await db.SaveChangesAsync();
 
-        return Results.Ok(particle);
-    });
+        return Results.Created($"/particles/{particle.Id}", particle);
+    })
+    .Accepts<Particle>("application/json")
+    .Produces<Particle>(StatusCodes.Status201Created)
+    .WithName("CretetParticle");
+
 app.MapDelete("/particles/{id}",
     async (int id, ParticlesDB db) =>
     {
         var entity = db.Particles.FirstOrDefault(p => p.Id == id);
         if (entity != null)
-        { 
+        {
             db.Particles.Remove(entity);
             await db.SaveChangesAsync();
             return Results.Ok(true);
@@ -45,6 +56,7 @@ app.MapDelete("/particles/{id}",
 
         return Results.Ok(false);
     });
+//.ExcludeFromDescription();
 
 if (app.Environment.IsDevelopment())
 {
