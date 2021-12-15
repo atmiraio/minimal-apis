@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParticlesAPI.NET6", "Partic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParticlesAPI.NET5", "ParticlesAPI.NET5\ParticlesAPI.NET5.csproj", "{D6B6B331-17AE-42E2-8503-BBB825EE4AB1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{69C81126-E081-44BD-971F-1FFB4F14532F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D6B6B331-17AE-42E2-8503-BBB825EE4AB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6B6B331-17AE-42E2-8503-BBB825EE4AB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6B6B331-17AE-42E2-8503-BBB825EE4AB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69C81126-E081-44BD-971F-1FFB4F14532F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69C81126-E081-44BD-971F-1FFB4F14532F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69C81126-E081-44BD-971F-1FFB4F14532F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69C81126-E081-44BD-971F-1FFB4F14532F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
